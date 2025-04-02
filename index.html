@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #remarks, #submit {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Stop Payment</h1>
+      <p>Search account1</p>
+        <input type="text" id="searchBar" placeholder="Enter account name...">
+        <button id="retrieve">Retrieve</button>
+        <button id="selectAll">Select All</button>
+    </header>
+    <main>
+        <div id="content"></div>
+        <textarea id="remarks" placeholder="Enter remarks..."></textarea>
+        <button id="submit">Submit</button>
+        <div id="blockedContent">
+            <h2>Blocked Items</h2>
+            <ul id="blockedList"></ul>
+        </div>
+    </main>
+    <script>
+        let account = [["JH 10021", "JH 10022", "JH 10023", "MA 200021", "JC 300021", "JC 300026"
+                        , "MA 40001" , "MA 40002" , "MA 40003"];
+        const blockedItems = [];
+        
+        document.getElementById("retrieve").addEventListener("click", function() {
+            const query = document.getElementById("searchBar").value.trim().toLowerCase();
+            const contentDiv = document.getElementById("content");
+            contentDiv.innerHTML = "";
+            
+            if (query === "account1") {
+                if (account.length > 0) {
+                    account.forEach(item => {
+                        const div = document.createElement("div");
+                        const checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        checkbox.classList.add("item-checkbox");
+                        div.appendChild(checkbox);
+                        div.appendChild(document.createTextNode(item));
+                        contentDiv.appendChild(div);
+                    });
+                    document.getElementById("remarks").style.display = "block";
+                    document.getElementById("submit").style.display = "block";
+                } else {
+                    contentDiv.innerHTML = "<p>No records found</p>";
+                    document.getElementById("remarks").style.display = "none";
+                    document.getElementById("submit").style.display = "none";
+                }
+            } else {
+                contentDiv.innerHTML = "<p>No records found</p>";
+                document.getElementById("remarks").style.display = "none";
+                document.getElementById("submit").style.display = "none";
+            }
+        });
+        
+        document.getElementById("selectAll").addEventListener("click", function() {
+            document.querySelectorAll(".item-checkbox").forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        });
+        
+        document.getElementById("submit").addEventListener("click", function() {
+            const selectedItems = [];
+            const remarks = document.getElementById("remarks").value.trim();
+            
+            if (!remarks) {
+                alert("Remarks field is required!");
+                return;
+            }
+            
+            document.querySelectorAll(".item-checkbox:checked").forEach(checkbox => {
+                selectedItems.push(checkbox.nextSibling.textContent);
+            });
+            
+            // Remove selected items from the original list
+            account = account.filter(item => !selectedItems.includes(item));
+            
+            // Add selected items to the blocked list with remarks
+            blockedItems.push(...selectedItems.map(item => `${item} - ${remarks}`));
+            
+            // Refresh the displayed content
+            document.getElementById("retrieve").click();
+            
+            // Update the blocked items list
+            const blockedList = document.getElementById("blockedList");
+            blockedList.innerHTML = "";
+            
+            blockedItems.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = item;
+                blockedList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
