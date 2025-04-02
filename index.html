@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Website</title>
+    <title>Demo</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         #remarks, #submit {
@@ -14,7 +14,7 @@
 <body>
     <header>
         <h1>Stop Payment</h1>
-      <p>Search account1</p>
+      <p>Search 'account'</p>
         <input type="text" id="searchBar" placeholder="Enter account name...">
         <button id="retrieve">Retrieve</button>
         <button id="selectAll">Select All</button>
@@ -29,8 +29,8 @@
         </div>
     </main>
     <script>
-        let account = [["JH 10021", "JH 10022", "JH 10023", "MA 200021", "JC 300021", "JC 300026"
-                        , "MA 40001" , "MA 40002" , "MA 40003"];
+        let account = ["JH 10021", "JH 10022", "JH 10023", "MA 200021", "JC 300021", "JC 300026"
+                        , "MA 40001" , "MA 40002" , "MA 40003"]
         const blockedItems = [];
         
         document.getElementById("retrieve").addEventListener("click", function() {
@@ -38,7 +38,7 @@
             const contentDiv = document.getElementById("content");
             contentDiv.innerHTML = "";
             
-            if (query === "account1") {
+            if (query === "account") {
                 if (account.length > 0) {
                     account.forEach(item => {
                         const div = document.createElement("div");
